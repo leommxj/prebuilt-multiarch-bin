@@ -1,15 +1,21 @@
 # prebuilt-multiarch-bin
 
-prebuilt gdb/gdbserver/bindshell/reverseshell binary for multiple architeture
+prebuilt binaries for multiple architeture
 
-all binaries are stripped
+all binaries are statically linked and stripped
+
+## Items
+
+- gdb
+- socat
+- busybox
+- bind/reverse shell
 
 ## Bind/Reverse Shell binary
 
-source code is in the `src` directory.
 run the bind shell without arguments like `./bind_shell` will listening on the port 3343 and `./bind_shell 6666` will listen on 6666.
 run the reverse shell binary will connect to 127.0.0.1:3343 , use a hex editor the change cstring cotains the ip/port.
 
-## GDB
+## Github Actions
 
-gdb/gdbserver is in `ARCH/gdb-x.x.x` directory
+the config file for buildroot and github actions' workflow file are in the `src` branch
