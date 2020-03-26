@@ -37,9 +37,18 @@ jobs:
     - name: build busybox
       run: |
         sh src/scripts/busybox.sh
+    - name: build dropbear
+      run: |
+        sh src/scripts/dropbear.sh
     - name: build socat
       run: |
-        sh src/scripts/socat.sh
+        sh src/scripts/build_static.sh socat
+    - name: build strace
+      run: |
+        sh src/scripts/build_static.sh strace
+    - name: build tcpdump
+      run: |
+        sh src/scripts/build_static.sh tcpdump
     - name: build gdb
       run: |
         sh src/scripts/gdb.sh
@@ -97,7 +106,7 @@ jobs:
         ref: master
     - name: rm old binary
       run: |
-        rm -r `ls|grep -v README.md` || echo "No binary"
+        rm -r `ls|grep -v src` || echo "No binary"
     - uses: actions/download-artifact@v1
       with:
         name: arm
