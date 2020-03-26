@@ -106,7 +106,7 @@ jobs:
         ref: master
     - name: rm old binary
       run: |
-        rm -r `ls|grep -v src` || echo "No binary"
+        rm -r `ls|grep -v README.md` || echo "No binary"
     - uses: actions/download-artifact@v1
       with:
         name: arm
