@@ -13,6 +13,7 @@ all binaries are statically linked and stripped
 - tcpdump
 - strace
 - dropbear(some arch)
+- lsof
 
 ## Bind/Reverse Shell binary
 
