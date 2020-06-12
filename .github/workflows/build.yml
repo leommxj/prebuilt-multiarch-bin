@@ -43,6 +43,9 @@ jobs:
     - name: build socat
       run: |
         sh src/scripts/build_static.sh socat
+    - name: build lsof
+      run: |
+        sh src/scripts/build_static.sh lsof
     - name: build strace
       run: |
         sh src/scripts/build_static.sh strace
