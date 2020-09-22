@@ -1,12 +1,17 @@
 # prebuilt-multiarch-bin
 
-prebuilt binaries for multiple architeture
+prebuilt binaries for multiple architeture (arm, armeb, aarch64, aarch64_be, mips, mips1, mipsel, mipsel1, mips64, mips64el, powerpc, powerpc64, powerpc64le, riscv64, i586, x86_64)
 
 all binaries are statically linked and stripped
+## Buildroot
+
+* MIPS-I and MIPSEL-I are using `buildroot 2014.11` because they remove the support after that version
+* others are using `buildroot 2019.11.1`
+* compiled toolchain can be found at action's artifacts page (mips1/mipsel1 are file package from `output/host`, others are from `make sdk`)
 
 ## Items
 
-- gdb
+- gdb (mips1/mipsel1 are using `gdb 7.12.1`, others are `8.3.1`)
 - socat
 - busybox
 - bind/reverse shell
