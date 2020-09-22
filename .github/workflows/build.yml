@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix: 
-        TARGET_ARCH: [arm, armeb, aarch64, aarch64_be, mips, mipsel, mips64, mips64el, powerpc, powerpc64, powerpc64le, riscv64, i586, x86_64]
+        TARGET_ARCH: [arm, armeb, aarch64, aarch64_be, mips, mips1, mipsel, mipsel1, mips64, mips64el, powerpc, powerpc64, powerpc64le, riscv64, i586, x86_64]
     env:
       M: ${{ matrix.TARGET_ARCH }}-linux
       TARGET_ARCH: ${{ matrix.TARGET_ARCH }}
@@ -28,71 +28,46 @@ jobs:
       run: |
        mkdir ${TARGET_ARCH}
        sudo apt-get install texinfo
+    - name: run special selector
+      run: |
+        source src/scripts/selector.sh
     - name: build toolchain
       run: |
-        sh src/scripts/buildroot.sh
+        bash src/scripts/buildroot.sh
     - name: build shell
       run: |
-        sh src/scripts/shell.sh
+        bash src/scripts/shell.sh
     - name: build busybox
       run: |
-        sh src/scripts/busybox.sh
+        bash src/scripts/busybox.sh
     - name: build dropbear
       run: |
-        sh src/scripts/dropbear.sh
+        bash src/scripts/dropbear.sh
     - name: build socat
       run: |
-        sh src/scripts/build_static.sh socat
+        bash src/scripts/build_static.sh socat
     - name: build lsof
       run: |
-        sh src/scripts/build_static.sh lsof
+        bash src/scripts/build_static.sh lsof
     - name: build strace
       run: |
-        sh src/scripts/build_static.sh strace
+        bash src/scripts/build_static.sh strace
     - name: build tcpdump
       run: |
-        sh src/scripts/build_static.sh tcpdump
+        bash src/scripts/build_static.sh tcpdump
     - name: build gdb
       run: |
-        sh src/scripts/gdb.sh
+        bash src/scripts/gdb.sh
     - uses: actions/upload-artifact@v1
       with:
         name: ${{ matrix.TARGET_ARCH}}
         path: ${{ matrix.TARGET_ARCH}}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ matrix.TARGET_ARCH}}_sdk-buildroot.tar.gz
+        path: ${{ matrix.TARGET_ARCH}}_sdk-buildroot.tar.gz
 
 
-        #  riscv-build:
-        #    runs-on: ubuntu-18.04
-        #    env:
-        #      M: riscv-linux
-        #      TARGET_ARCH: riscv
-        #    steps:
-        #    - uses: actions/checkout@v2
-        #    - name: setup
-        #      run: |
-        #       mkdir ${TARGET_ARCH}
-        #       sudo apt-get install texinfo
-        #    - name: build toolchain
-        #      run: |
-        #        sh src/scripts/buildroot.sh
-        #    - name: build shell
-        #      run: |
-        #        sh src/scripts/shell.sh
-        #    - name: build busybox
-        #      run: |
-        #        sh src/scripts/busybox.sh
-        #    - name: build socat
-        #      run: |
-        #        sh src/scripts/socat.sh
-        #    - name: build gdb
-        #      run: |
-        #        sh src/scripts/gdb.sh
-        #    - uses: actions/upload-artifact@v1
-        #      with:
-        #        name: riscv
-        #        path: riscv
-
-        
   push-git:
     runs-on: ubuntu-latest
     env:
@@ -127,7 +102,13 @@ jobs:
         name: mips
     - uses: actions/download-artifact@v1
       with:
+        name: mips1
+    - uses: actions/download-artifact@v1
+      with:
         name: mipsel
+    - uses: actions/download-artifact@v1
+      with:
+        name: mipsel1
     - uses: actions/download-artifact@v1
       with:
         name: mips64
