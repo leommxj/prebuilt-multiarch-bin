@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix: 
-        TARGET_ARCH: [arm, armeb, aarch64, aarch64_be, mips, mips1, mipsel, mipsel1, mips64, mips64el, powerpc, powerpc64, powerpc64le, riscv64, i586, x86_64]
+        TARGET_ARCH: [arm, armeb, aarch64, aarch64_be, mips, mips1, mipsr6, mipsel, mips1el, mipsr6el, mips64, mips64r6, mips64el, mips64r6el, powerpc, powerpc64, powerpc64le, riscv64, i586, x86_64]
     env:
       M: ${{ matrix.TARGET_ARCH }}-linux
       TARGET_ARCH: ${{ matrix.TARGET_ARCH }}
@@ -105,16 +105,28 @@ jobs:
         name: mips1
     - uses: actions/download-artifact@v1
       with:
+        name: mipsr6
+    - uses: actions/download-artifact@v1
+      with:
         name: mipsel
     - uses: actions/download-artifact@v1
       with:
-        name: mipsel1
+        name: mips1el
+    - uses: actions/download-artifact@v1
+      with:
+        name: mipsr6el
     - uses: actions/download-artifact@v1
       with:
         name: mips64
     - uses: actions/download-artifact@v1
       with:
+        name: mips64r6
+    - uses: actions/download-artifact@v1
+      with:
         name: mips64el
+    - uses: actions/download-artifact@v1
+      with:
+        name: mips64r6el
     - uses: actions/download-artifact@v1
       with:
         name: powerpc
