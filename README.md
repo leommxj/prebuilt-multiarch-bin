@@ -3,13 +3,16 @@
 prebuilt binaries for multiple architeture (arm, armeb, aarch64, aarch64_be, mips, mips1, mipsel, mipsel1, mips64, mips64el, powerpc, powerpc64, powerpc64le, riscv64, i586, x86_64)
 
 all binaries are statically linked and stripped
+
+Please go to the [Release](https://github.com/leommxj/prebuilt-multiarch-bin/releases) page for download. `*archName*_tools.zip` contains tools' binary (see Tools Section) for that specific arch, and `allinone.zip` contains all of it.
+
 ## Buildroot
 
 * MIPS-I and MIPSEL-I are using `buildroot 2014.11` because they remove the support after that version
 * others are using `buildroot 2019.11.1`
 * compiled toolchain can be found at action's artifacts page (mips1/mipsel1 are file package from `output/host`, others are from `make sdk`)
 
-## Items
+## Tools
 
 - gdb (mips1/mips1el are using `gdb 7.12.1`, others are `8.3.1`)
 - socat
@@ -18,7 +21,7 @@ all binaries are statically linked and stripped
 - bind/reverse shell .so library (barely tested)
 - tcpdump
 - strace
-- dropbear(mips1/mips1el are not static link :( )
+- dropbear(mips1/mips1el are not static link `:(` )
 - lsof
 
 ## Bind/Reverse Shell binary
@@ -34,3 +37,6 @@ all binaries are statically linked and stripped
 ## Github Actions
 
 the config file for buildroot and github actions' workflow file are in the `src` branch
+
+## Changelog
+* 20220514 - changet to use release, old way can be found in `master_deprecated` branch
