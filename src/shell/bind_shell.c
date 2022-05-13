@@ -20,7 +20,7 @@ void spawn(int fd) {
         setresuid(0, 0, 0);
         setresgid(0, 0, 0);
     }
-	execl(exe_path, exe_arg0, NULL, NULL, NULL);
+    execl(exe_path, exe_arg0, NULL, NULL, NULL);
 }
 
 int main(int argc, char* argv[]) {
