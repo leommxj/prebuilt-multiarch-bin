@@ -1,17 +1,15 @@
 name: build
 
-on: 
+on:
   push:
-    branches:
-      - src
+    tags:
+      - "build_*"
 
 env:
   BUILDROOT_VERSION: 2019.11.1
   GDB_VERSION: 8.3.1
 
-
 jobs:
-
   build-all: 
     runs-on: ubuntu-18.04
     strategy:
@@ -58,17 +56,17 @@ jobs:
     - name: build gdb
       run: |
         bash src/scripts/gdb.sh
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.TARGET_ARCH}}
+        name: ${{ matrix.TARGET_ARCH}}_tools
         path: ${{ matrix.TARGET_ARCH}}
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v3
       with:
         name: ${{ matrix.TARGET_ARCH}}_sdk-buildroot.tar.gz
         path: ${{ matrix.TARGET_ARCH}}_sdk-buildroot.tar.gz
 
 
-  push-git:
+  release:
     runs-on: ubuntu-latest
     env:
       GITHUB_ACTOR: ${{github.actor}}
@@ -78,80 +76,26 @@ jobs:
     steps:
     - name: setup
       run: |
-        sudo apt-get install tree git
-    - uses: actions/checkout@v2
+        mkdir allinone
+    - uses: actions/download-artifact@v3
       with:
-        ref: master
-    - name: rm old binary
+        path: allinone/
+    - name: zip files
       run: |
-        rm -r `ls|grep -v README.md` || echo "No binary"
-    - uses: actions/download-artifact@v1
-      with:
-        name: arm
-    - uses: actions/download-artifact@v1
-      with:
-        name: armeb
-    - uses: actions/download-artifact@v1
-      with:
-        name: aarch64
-    - uses: actions/download-artifact@v1
-      with:
-        name: aarch64_be
-    - uses: actions/download-artifact@v1
-      with:
-        name: mips
-    - uses: actions/download-artifact@v1
-      with:
-        name: mips1
-    - uses: actions/download-artifact@v1
-      with:
-        name: mipsr6
-    - uses: actions/download-artifact@v1
-      with:
-        name: mipsel
-    - uses: actions/download-artifact@v1
-      with:
-        name: mips1el
-    - uses: actions/download-artifact@v1
-      with:
-        name: mipsr6el
-    - uses: actions/download-artifact@v1
-      with:
-        name: mips64
-    - uses: actions/download-artifact@v1
-      with:
-        name: mips64r6
-    - uses: actions/download-artifact@v1
-      with:
-        name: mips64el
-    - uses: actions/download-artifact@v1
-      with:
-        name: mips64r6el
-    - uses: actions/download-artifact@v1
-      with:
-        name: powerpc
-    - uses: actions/download-artifact@v1
-      with:
-        name: powerpc64
-    - uses: actions/download-artifact@v1
-      with:
-        name: powerpc64le
-    - uses: actions/download-artifact@v1
-      with:
-        name: riscv64
-    - uses: actions/download-artifact@v1
-      with:
-        name: i586
-    - uses: actions/download-artifact@v1
-      with:
-        name: x86_64
-    - name: commit and push
+        mkdir zipfiles
+        mv allinone/*_sdk-buildroot.tar.gz/* zipfiles/
+        rm -r allinone/*_sdk-buildroot.tar.gz
+        cd allinone
+        ls .|xargs -i{} zip -r ../zipfiles/{}.zip {}
+        cd ..
+        zip -r zipfiles/allinone.zip allinone
+    - name: show files
       run: |
         ls -al .
         tree .
-        find . -path "./src" -prune -o -path "./.*" -prune -o -type f -exec file {} \;
-        git config --local user.email "leommxj@gmail.com"
-        git config --local user.name "leommxj"
-        git add -A .
-        git commit -m "compiled" 
-        git push "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          zipfiles/*
