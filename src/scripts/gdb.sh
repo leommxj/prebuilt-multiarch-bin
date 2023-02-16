@@ -7,7 +7,7 @@ if [[ "${GDB_VERSION}" == "7.12.1" ]];then
 fi
 sed -i -e 's/srv_linux_thread_db=yes//' gdb/gdbserver/configure.srv
 ./configure --target=${M} --host=${M} --program-prefix=${M}
-make CFLAGS="-O2 -static" CXXFLAGS="-O2 -static" || echo "FUCK ${M}" # may failed to compile all but successful build gdb/gdbserver
+make CFLAGS="-O2 -static" CXXFLAGS="-O2 -static" CC_FOR_BUILD=gcc || echo "FUCK ${M}" # may failed to compile all but successful build gdb/gdbserver
 $M-strip gdb/gdb
 $M-strip gdb/gdbserver/gdbserver
 ls -al gdb/gdb gdb/gdbserver/gdbserver
