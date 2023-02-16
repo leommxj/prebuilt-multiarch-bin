@@ -39,4 +39,5 @@ Please go to the [Release](https://github.com/leommxj/prebuilt-multiarch-bin/rel
 the config file for buildroot and github actions' workflow file are in the `src` branch
 
 ## Changelog
-* 20220514 - changet to use release, old way can be found in `master_deprecated` branch
+* 20220514 - change to use release, old way can be found in `master_deprecated` branch
+* 20230217 - fix gdb build on x86_64
