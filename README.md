@@ -6,6 +6,10 @@ all binaries are statically linked and stripped
 
 Please go to the [Release](https://github.com/leommxj/prebuilt-multiarch-bin/releases) page for download. `*archName*_tools.zip` contains tools' binary (see Tools Section) for that specific arch, and `allinone.zip` contains all of it.
 
+Or download single file directly from `bin` branch
+
+Source file and Scripts are in `src` branch
+
 ## Buildroot
 
 * MIPS-I and MIPSEL-I are using `buildroot 2014.11` because they remove the support after that version
@@ -39,5 +43,6 @@ Please go to the [Release](https://github.com/leommxj/prebuilt-multiarch-bin/rel
 the config file for buildroot and github actions' workflow file are in the `src` branch
 
 ## Changelog
-* 20220514 - change to use release, old way can be found in `master_deprecated` branch
+* ~~20220514 - change to use release, old way can be found in `master_deprecated` branch~~ 20230305 - store files at `bin` branch with git lfs
 * 20230217 - fix gdb build on x86_64
+* 20230305 - enable telnetd applet and its stanalone mode in busybox
