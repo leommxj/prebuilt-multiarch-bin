@@ -65,7 +65,6 @@ jobs:
         name: ${{ matrix.TARGET_ARCH}}_sdk-buildroot.tar.gz
         path: ${{ matrix.TARGET_ARCH}}_sdk-buildroot.tar.gz
 
-
   release:
     runs-on: ubuntu-latest
     env:
@@ -99,3 +98,49 @@ jobs:
       with:
         files: |
           zipfiles/*
+
+  push-bin:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_ACTOR: ${{github.actor}}
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      GITHUB_REPOSITORY: ${{github.repository}}
+      TBRANCH: bin
+    needs: [build-all]
+    steps:
+    - name: setup
+      run: |
+        mkdir allinone
+        sudo apt-get install git-lfs
+    - uses: actions/download-artifact@v3
+      with:
+        path: allinone/
+    - name: remove sdk
+      run: |
+        rm -r allinone/*_sdk-buildroot.tar.gz
+    - uses: actions/checkout@v3
+      with:
+        ref: src
+        path: src
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ env.TBRANCH }}
+        path: ${{ env.TBRANCH }}
+    - name: show files
+      run: |
+        ls -al .
+        tree .
+    - name: Push
+      run: |
+        cd $TBRANCH
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git update-ref -d refs/heads/$TBRANCH
+        git rm -rf .
+        cp -r ../allinone/* ./
+        ls ../allinone | xargs -I{} git lfs track "{}/**"
+        cp ../src/README.md ./
+        cp ../src/LICENSE ./
+        git add .
+        git commit -m "upload bins"
+        git push --set-upstream origin $TBRANCH -f
