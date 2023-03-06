@@ -139,8 +139,10 @@ jobs:
         git rm -rf .
         cp -r ../allinone/* ./
         ls ../allinone | xargs -I{} git lfs track "{}/**"
+        tree . -H https://bin.leommxj.com -o index.html -T https://github.com/leommxj/prebuilt-multiarch-bin
         cp ../src/README.md ./
         cp ../src/LICENSE ./
+        cp ../src/CNAME ./
         git add .
         git commit -m "upload bins"
         git push --set-upstream origin $TBRANCH -f
