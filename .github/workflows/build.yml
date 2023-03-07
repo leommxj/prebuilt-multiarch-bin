@@ -138,7 +138,6 @@ jobs:
         git update-ref -d refs/heads/$TBRANCH
         git rm -rf .
         cp -r ../allinone/* ./
-        ls ../allinone | xargs -I{} git lfs track "{}/**"
         tree . -H https://bin.leommxj.com -o index.html -T https://github.com/leommxj/prebuilt-multiarch-bin
         cp ../src/README.md ./
         cp ../src/LICENSE ./
